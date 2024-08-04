@@ -1,5 +1,6 @@
 package com.home.clouduser.dao;
 
+import com.home.clouduser.entities.Order;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,24 +13,24 @@ import java.util.Optional;
 @Slf4j
 public class UserDaoTest {
     @Autowired
-    private OrderDao userDao;
+    private OrderDao orderDao;
     @Test
-    void findByUsername() {
+    void findByCommodityName() {
         log.info("Test findByUsername");
-        User liuyan = userDao.findByUsername("柳岩");
-        log.info("User: {}", liuyan);
-        Assertions.assertNotNull(liuyan);
+        Order order = orderDao.findByCommodityName("Apple 苹果 iPhone 12 ");
+        log.info("Order: {}", order);
+        Assertions.assertNotNull(order);
     }
 
     @Test
     void findById() {
         log.info("Test findById");
-        Optional<User> optional = userDao.findById(2L);
-        User user = null;
+        Optional<Order> optional = orderDao.findById(2L);
+        Order order = null;
         if (optional.isPresent()) {
-           user = optional.get();
+            order = optional.get();
         }
-        log.info("User: {}", user);
-        Assertions.assertNotNull(user);
+        log.info("Order: {}", order);
+        Assertions.assertNotNull(order);
     }
 }
