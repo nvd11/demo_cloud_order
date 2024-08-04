@@ -23,11 +23,11 @@ public class AppVersionInfo implements InfoContributor {
     @Override
     public void contribute(Info.Builder builder) {
         log.info("AppVersionInfo: contribute ...");
-        builder.withDetail("app", "Cloud User API")
+        builder.withDetail("app", "Cloud Order Service")
                 .withDetail("version", appVersion)
                 .withDetail("hostname",hostname)
                 .withDetail("dbUrl", dbUrl)
-                .withDetail("description", "This is a simple Spring Boot application to demonstrate the use of BigQuery in GCP.");
+                .withDetail("description", "This is a simple Spring Boot application to for cloud order.");
     }
 
 

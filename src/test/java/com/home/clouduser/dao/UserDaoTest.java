@@ -1,6 +1,5 @@
 package com.home.clouduser.dao;
 
-import com.home.clouduser.entities.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,7 @@ import java.util.Optional;
 @Slf4j
 public class UserDaoTest {
     @Autowired
-    private UserDao userDao;
+    private OrderDao userDao;
     @Test
     void findByUsername() {
         log.info("Test findByUsername");

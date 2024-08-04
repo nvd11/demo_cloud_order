@@ -14,7 +14,7 @@ class PasswordConfigTest {
     @Autowired PasswordConfig passwordConfig;
     @Test
     void getEncryptedPassword() {
-        String password = "wxsdfsfdss";
+        String password = "hsbc1234";
         String encryptedPassword = passwordConfig.getEncryptedPassword(password);
         log.info("Encrypted password: {}", encryptedPassword);
         assertNotNull(encryptedPassword);
