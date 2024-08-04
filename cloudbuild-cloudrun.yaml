@@ -1,0 +1,41 @@
+steps:
+  - id: run maven package
+    name: maven:3.9.6-sapmachine-17 # https://hub.docker.com/_/maven
+    entrypoint: mvn
+    args: ['package', '-Dmaven.test.skip=true']
+
+  # https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values
+  - id: build docker image
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'europe-west2-docker.pkg.dev/$PROJECT_ID/my-docker-repo/${_APP_NAME}', '.']
+
+  - id: upload docker image to GAR
+    name: 'gcr.io/cloud-builders/docker'
+    args: [ 'push', 'europe-west2-docker.pkg.dev/$PROJECT_ID/my-docker-repo/${_APP_NAME}']
+
+  # deploy to Cloud run
+  - id: deploy image to cloud run
+    name: 'gcr.io/cloud-builders/gcloud'
+    args: ['run', 'deploy', 'demo-cloud-user',
+           '--image=europe-west2-docker.pkg.dev/$PROJECT_ID/my-docker-repo/${_APP_NAME}:${_APP_TAG}',
+           '--port=8080',
+           '--platform=managed',
+           '--region=europe-west2',
+           '--no-allow-unauthenticated',
+           '--service-account=vm-common@jason-hsbc.iam.gserviceaccount.com',
+           '--key=projects/$PROJECT_ID/locations/europe-west2/keyRings/mykeyring/cryptoKeys/mycmek',
+           '--set-env-vars=APP_ENVIRONMENT=${_APP_ENV}',
+           '--vpc-connector=${_VPC_CONNECTOR}',
+           '--vpc-egress=all'
+           ]
+# https://stackoverflow.com/questions/68779751/error-publishing-source-code-from-cloud-build-to-a-bucket-using-triggers
+logsBucket: gs://jason-hsbc_cloudbuild/logs/
+options: # https://cloud.google.com/cloud-build/docs/build-config#options
+  logging: GCS_ONLY # or CLOUD_LOGGING_ONLY https://cloud.google.com/cloud-build/docs/build-config#logging
+
+
+substitutions:
+  _APP_NAME: demo-cloud-user
+  _APP_TAG: latest
+  _APP_ENV: prod
+  _VPC_CONNECTOR: vpc-con

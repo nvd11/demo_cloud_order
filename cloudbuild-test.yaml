@@ -1,0 +1,36 @@
+steps:
+
+  # to prepare ssh private key file
+  - id: prepare ssh private key file
+    name: 'ubuntu'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        echo ${_VM_HOST}
+        echo $$SSH_PRIVATE_KEY | cut -c 1-30
+        echo $$SSH_PRIVATE_KEY > /workspace/ssh_key_file
+        echo $$SSH_PUBLIC_KEY > /workspace/ssh_key_file.pub
+        chmod 600 /workspace/ssh_key_file
+        chmod 600 /workspace/ssh_key_file.pub
+    secretEnv:
+      - 'SSH_PRIVATE_KEY'
+      - 'SSH_PUBLIC_KEY'
+
+
+
+
+
+
+logsBucket: gs://jason-hsbc_cloudbuild/logs/
+options: # https://cloud.google.com/cloud-build/docs/build-config#options
+  logging: GCS_ONLY # or CLOUD_LOGGING_ONLY https://cloud.google.com/cloud-build/docs/build-config#logging
+
+# to define
+availableSecrets:
+  secretManager:
+    - versionName: projects/$PROJECT_ID/secrets/gateman-private-ssh-key/versions/latest
+      env: 'SSH_PRIVATE_KEY'
+    - versionName: projects/$PROJECT_ID/secrets/gateman-public-ssh-key/versions/latest
+      env: 'SSH_PUBLIC_KEY'
+
