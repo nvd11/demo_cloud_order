@@ -1,0 +1,78 @@
+steps:
+
+  # to prepare ssh private key file
+  - id: prepare ssh private key file
+    name: 'ubuntu'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        echo $$SSH_PRIVATE_KEY | cut -c 1-30
+        echo $$SSH_PRIVATE_KEY > /workspace/ssh_key_file
+        echo $$SSH_PUBLIC_KEY > /workspace/ssh_key_file.pub
+        chmod 600 /workspace/ssh_key_file
+        chmod 600 /workspace/ssh_key_file.pub
+    secretEnv:
+      - 'SSH_PRIVATE_KEY'
+      - 'SSH_PUBLIC_KEY'
+
+
+
+  - id: run maven package
+    name: maven:3.9.6-sapmachine-17 # https://hub.docker.com/_/maven
+    entrypoint: mvn
+    args: [ 'package' ]
+
+  # https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values
+  # i guess I should combine the two steps into one
+  - id: build docker image
+    name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'europe-west2-docker.pkg.dev/$PROJECT_ID/my-docker-repo/${_APP_NAME}', '.' ]
+
+  - id: upload docker image to GAR
+    name: 'gcr.io/cloud-builders/docker'
+    args: [ 'push', 'europe-west2-docker.pkg.dev/$PROJECT_ID/my-docker-repo/${_APP_NAME}' ]
+
+
+  - id: deploy image to GCE
+    name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        whoami
+        gcloud auth list
+        set -x
+        mkdir -p /root/.ssh
+        gcloud secrets versions access latest --secret=gateman-private-ssh-key > /root/.ssh/id_rsa
+        gcloud secrets versions access latest --secret=gateman-public-ssh-key > /root/.ssh/id_rsa.pub
+        chmod 600 /root/.ssh/id_rsa
+        chmod 600 /root/.ssh/id_rsa.pub
+        gcloud compute ssh gateman@${_VM_HOST} --zone=europe-west2-c --quiet --ssh-key-file=/root/.ssh/id_rsa -- "whoami" 
+        gcloud compute ssh gateman@${_VM_HOST} --zone=europe-west2-c --quiet --ssh-key-file=/root/.ssh/id_rsa -- "sudo docker container prune -f; sudo docker ps -a"  
+        gcloud compute ssh gateman@${_VM_HOST} --zone=europe-west2-c --quiet --ssh-key-file=/root/.ssh/id_rsa -- "sudo docker stop ${_APP_NAME} && sudo docker rm ${_APP_NAME}" 
+        gcloud compute ssh gateman@${_VM_HOST} --zone=europe-west2-c --quiet --ssh-key-file=/root/.ssh/id_rsa -- "sudo docker pull europe-west2-docker.pkg.dev/$PROJECT_ID/my-docker-repo/${_APP_NAME}:${_APP_TAG}"
+        gcloud compute ssh gateman@${_VM_HOST} --zone=europe-west2-c --quiet --ssh-key-file=/root/.ssh/id_rsa -- "sudo docker run -d -p ${_PORT}:8080 -e APP_ENVIRONMENT=${_APP_ENV} --name ${_APP_NAME} europe-west2-docker.pkg.dev/$PROJECT_ID/my-docker-repo/${_APP_NAME}:${_APP_TAG}"
+        echo ok
+        
+  
+
+
+logsBucket: gs://jason-hsbc_cloudbuild/logs/
+options: # https://cloud.google.com/cloud-build/docs/build-config#options
+  logging: GCS_ONLY # or CLOUD_LOGGING_ONLY https://cloud.google.com/cloud-build/docs/build-config#logging
+
+# to define
+availableSecrets:
+  secretManager:
+    - versionName: projects/$PROJECT_ID/secrets/gateman-private-ssh-key/versions/latest
+      env: 'SSH_PRIVATE_KEY'
+    - versionName: projects/$PROJECT_ID/secrets/gateman-public-ssh-key/versions/latest
+      env: 'SSH_PUBLIC_KEY'
+
+substitutions:
+  _APP_NAME: demo-cloud-user
+  _APP_TAG: latest
+  _PORT: "8081"
+  _APP_ENV: dev
+  _VM_HOST: "tf-vpc0-subnet0-vm0"
