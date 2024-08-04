@@ -14,25 +14,31 @@ import java.util.Date;
 
 @Entity // to be pojo class of Hibernate
 @Data
-@Table(name = "tb_user")
+@Table(name = "tb_order")
 @ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Audited
-public class User {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
 
-    @Column(name="username")
-    private String username;
+    @Column(name="user_id")
+    private Long userId;
 
-    @Column(name="address")
-    private String address;
+    @Column(name="name")
+    private String commodityName;
+
+    @Column(name="price")
+    private Long price;
+
+    @Column(name="num")
+    private Integer number;
 
     @CreatedDate
     @JsonIgnore
@@ -49,6 +55,5 @@ public class User {
     @LastModifiedBy
     @JsonIgnore
     private String lastModifiedBy;
-
 
 }
