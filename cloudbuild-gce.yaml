@@ -71,8 +71,8 @@ availableSecrets:
       env: 'SSH_PUBLIC_KEY'
 
 substitutions:
-  _APP_NAME: demo-cloud-user
+  _APP_NAME: demo-cloud-order
   _APP_TAG: latest
-  _PORT: "8081"
+  _PORT: "8082"
   _APP_ENV: dev
   _VM_HOST: "tf-vpc0-subnet0-vm0"
