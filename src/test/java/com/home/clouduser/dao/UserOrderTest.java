@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @SpringBootTest
 @Slf4j
-public class UserDaoTest {
+public class UserOrderTest {
     @Autowired
     private OrderDao orderDao;
     @Test
@@ -25,7 +25,7 @@ public class UserDaoTest {
     @Test
     void findById() {
         log.info("Test findById");
-        Optional<Order> optional = orderDao.findById(2L);
+        Optional<Order> optional = orderDao.findById(101L);
         Order order = null;
         if (optional.isPresent()) {
             order = optional.get();
