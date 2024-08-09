@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.home</groupId>
 	<artifactId>demo_cloud_order</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<name>demo_cloud_user</name>
 	<description>Demo project for Spring Boot for cloud order</description>
 	<properties>
