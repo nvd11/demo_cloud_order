@@ -35,5 +35,5 @@ options: # https://cloud.google.com/cloud-build/docs/build-config#options
 
 substitutions:
   _DOCKER_REPO_NAME: my-docker-repo
-  _APP_NAME: cloud-user
+  _APP_NAME: cloud-order
   _GAR_BASE: europe-west2-docker.pkg.dev
