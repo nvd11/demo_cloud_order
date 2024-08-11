@@ -1,5 +1,6 @@
 package com.home.clouduser.monitor.endpoint;
 
+import com.home.clouduser.service.InfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,8 +18,13 @@ public class AppVersionInfo implements InfoContributor {
     @Autowired
     private String hostname;
 
+    @Autowired
+    private InfoService infoservice;
+
+
     @Value("${spring.datasource.url}")
     private String dbUrl;
+
 
     @Override
     public void contribute(Info.Builder builder) {
@@ -27,7 +33,9 @@ public class AppVersionInfo implements InfoContributor {
                 .withDetail("version", appVersion)
                 .withDetail("hostname",hostname)
                 .withDetail("dbUrl", dbUrl)
-                .withDetail("description", "This is a simple Spring Boot application to for cloud order.");
+                .withDetail("description", "This is a simple Spring Boot application to for cloud order.")
+                .withDetail("SystemVariables", infoservice.getSystemVariables());
+
     }
 
 
