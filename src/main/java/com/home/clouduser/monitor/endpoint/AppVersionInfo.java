@@ -21,12 +21,11 @@ public class AppVersionInfo implements InfoContributor {
     @Autowired
     private InfoService infoservice;
 
-
     @Value("${spring.datasource.url}")
     private String dbUrl;
 
-
     @Override
+    // https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html#production-ready-endpoints-info
     public void contribute(Info.Builder builder) {
         log.info("AppVersionInfo: contribute ...");
         builder.withDetail("app", "Cloud Order Service")
@@ -37,7 +36,4 @@ public class AppVersionInfo implements InfoContributor {
                 .withDetail("SystemVariables", infoservice.getSystemVariables());
 
     }
-
-
-
 }
