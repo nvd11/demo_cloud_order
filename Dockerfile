@@ -14,4 +14,5 @@ EXPOSE 8080
 ENV APP_ENVIRONMENT=dev
 
 # 设置启动命令
-CMD java -jar -Dserver.port=8080 -Dspring.config.name=application-${APP_ENVIRONMENT} app.jar
+# CMD java -jar -Dserver.port=8080 -Dspring.config.name=application-${APP_ENVIRONMENT} app.jar
+CMD java -jar -Dserver.port=8080 app.jar--spring.profiles.active=${APP_ENVIRONMENT}
