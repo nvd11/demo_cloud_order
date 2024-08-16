@@ -1,6 +1,6 @@
 application:
   env:
-    name: prod
+    name: dev
 
 pom:
   version: @project.version@ # need lombok
