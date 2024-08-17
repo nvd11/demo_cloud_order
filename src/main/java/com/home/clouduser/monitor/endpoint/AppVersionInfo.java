@@ -32,7 +32,7 @@ public class AppVersionInfo implements InfoContributor {
                 .withDetail("version", appVersion)
                 .withDetail("hostname",hostname)
                 .withDetail("dbUrl", dbUrl)
-                .withDetail("description", "This is a simple Spring Boot application to for cloud order.")
+                .withDetail("description", "This is a simple Spring Boot application to for cloud order...")
                 .withDetail("SystemVariables", infoservice.getSystemVariables());
 
     }
