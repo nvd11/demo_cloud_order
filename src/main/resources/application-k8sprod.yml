@@ -5,6 +5,15 @@ application:
 pom:
   version: @project.version@ # need lombok
 
+jasypt:
+  encryptor:
+    # algorithm of encryption
+    algorithm: PBEWITHHMACSHA512ANDAES_256
+    # salt for encryption
+    # how to avoid to expose the salt in the code?
+    # https://blog.csdn.net/qq_26878363/article/details/103731173
+    password: jaspyt_password
+
 server:
   port: 8080
   error:
@@ -43,11 +52,3 @@ spring:
             audit_strategy: org.hibernate.envers.strategy.internal.ValidityAuditStrategy
             audit_strategy_validity_store_revend_timestamp: true
 
-jasypt:
-  encryptor:
-    # algorithm of encryption
-    algorithm: PBEWITHHMACSHA512ANDAES_256
-    # salt for encryption
-    # how to avoid to expose the salt in the code?
-    # https://blog.csdn.net/qq_26878363/article/details/103731173
-    password: jaspyt_password
