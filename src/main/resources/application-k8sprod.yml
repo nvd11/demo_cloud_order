@@ -1,6 +1,6 @@
 application:
   env:
-    name: dev
+    name: k8s-prod
 
 pom:
   version: @project.version@ # need lombok
