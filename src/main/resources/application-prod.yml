@@ -53,3 +53,6 @@ jasypt:
     # how to avoid to expose the salt in the code?
     # https://blog.csdn.net/qq_26878363/article/details/103731173
     password: jaspyt_password
+
+external-custom-config1-path: /app/config/external-config.properties
+external-custom-config2-path: /app/config/external-config2.properties
