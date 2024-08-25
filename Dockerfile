@@ -4,6 +4,9 @@ FROM openjdk:17
 # 设置工作目录
 WORKDIR /app
 
+# create /app/config
+RUN mkdir -p /app/config
+
 # 将构建好的 JAR 文件复制到容器中
 COPY target/*.jar app.jar
 
