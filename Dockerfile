@@ -1,24 +1,25 @@
-# 使用基础镜像，包含 Oracle JDK 8
+# use the basic openjdk image
 FROM openjdk:17
 
-# 设置工作目录
+# setup working directory
 WORKDIR /app
 
 # create /app/config
 RUN mkdir -p /app/config
 
-# 将配置文件复制到容器中 When using COPY with more than one source file, the destination must be a directory and end with a /
+# copy configs files from project folder to /app/config
+# When using COPY with more than one source file, the destination must be a directory and end with a /
 COPY configs/*.properties /app/config/
 
-# 将构建好的 JAR 文件复制到容器中
+# copy and rename jar file into container
 COPY target/*.jar app.jar
 
-# 暴露 8080 端口
+# expose port
 EXPOSE 8080
 
-# 定义环境变量，默认为 dev
+# define environment variable, and provide a default value
 ENV APP_ENVIRONMENT=dev
 
-# 设置启动命令
+# define the default startup command, it could be overridden in k8s
 # CMD java -jar -Dserver.port=8080 -Dspring.config.name=application-${APP_ENVIRONMENT} app.jar
 CMD java -jar -Dserver.port=8080 app.jar --spring.profiles.active=${APP_ENVIRONMENT}
