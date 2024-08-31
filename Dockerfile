@@ -5,11 +5,12 @@ FROM openjdk:17
 WORKDIR /app
 
 # create /app/config
-RUN mkdir -p /app/config
+RUN mkdir -p /app/config/config2
 
 # copy configs files from project folder to /app/config
 # When using COPY with more than one source file, the destination must be a directory and end with a /
-COPY configs/*.properties /app/config/
+COPY configs/external-config.properties /app/config/
+COPY configs/external-config2.properties /app/config/config2/
 
 # copy and rename jar file into container
 COPY target/*.jar app.jar

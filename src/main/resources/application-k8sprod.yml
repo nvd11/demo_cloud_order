@@ -53,4 +53,4 @@ jasypt:
     password: jaspyt_password
 
 external-custom-config1-path: /app/config/external-config.properties
-external-custom-config2-path: /app/config/external-config2.properties
+external-custom-config2-path: /app/config/config2/external-config2.properties
