@@ -7,8 +7,8 @@ WORKDIR /app
 # create /app/config
 RUN mkdir -p /app/config
 
-# 将配置文件复制到容器中
-COPY configs/*.properties /app/config
+# 将配置文件复制到容器中 When using COPY with more than one source file, the destination must be a directory and end with a /
+COPY configs/*.properties /app/config/
 
 # 将构建好的 JAR 文件复制到容器中
 COPY target/*.jar app.jar
