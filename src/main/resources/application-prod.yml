@@ -56,3 +56,9 @@ jasypt:
 
 external-custom-config1-path: /app/config/external-config.properties
 external-custom-config2-path: /app/config/config2/external-config2.properties
+
+
+logging:
+  level:
+    root: INFO
+  file: logs/myapp.log
