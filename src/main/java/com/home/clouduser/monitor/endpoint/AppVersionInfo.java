@@ -39,7 +39,7 @@ public class AppVersionInfo implements InfoContributor {
     @Override
     // https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html#production-ready-endpoints-info
     public void contribute(Info.Builder builder) {
-        log.info("AppVersionInfo: contribute ...");
+        //log.info("AppVersionInfo: contribute ...");
         builder.withDetail("app", "Cloud Order Service")
                 .withDetail("appEnvProfile", appEnvProfile)
                 .withDetail("version", appVersion)
