@@ -30,7 +30,7 @@ public class DynamicExternalConfig {
     @Scheduled(fixedRate = 6000) // Refresh every 6 seconds
     public void refreshConfig() {
         try {
-            log.info("trying to refresh configuration customConfig2");
+            //log.info("trying to refresh configuration customConfig2");
             FileInputStream fis = new FileInputStream(externalConfigPath);
             properties.clear();
             properties.load(fis);
