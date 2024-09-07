@@ -1,5 +1,15 @@
 steps:
 
+  # to prepare ssh private key file
+  - id: prepare ssh private key file
+    name: 'ubuntu'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        pwd
+        chmod -R 777 .
+
   - id: trigger sonarqube scanning
     name: 'sonarsource/sonar-scanner-cli'
     entrypoint: '/bin/sh'
@@ -9,7 +19,7 @@ steps:
         whoami
         set -x
         pwd
-        ls -l
+        ls -ld
         sonar-scanner -Dsonar.projectKey=my:${_APP_NAME}  -Dsonar.host.url=${_SONARQUBE_HOST} -Dsonar.login=$$SONAR_TOKEN -Dsonar.projectKey=my:${_APP_NAME} -Dsonar.sources=.
     secretEnv:
       - 'SONAR_TOKEN'
