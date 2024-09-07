@@ -21,7 +21,7 @@ steps:
         whoami
         pwd
         ls -l
-        sonar-scanner -Dsonar.projectKey=my:${_APP_NAME}  -Dsonar.host.url=${_SONARQUBE_HOST} -Dsonar.token=$$SONAR_TOKEN -Dsonar.projectKey=my:${_APP_NAME} -Dsonar.exclusions=**/configs/** -Dsonar.sources=.
+        sonar-scanner -Dsonar.projectKey=my:${_APP_NAME}  -Dsonar.host.url=${_SONARQUBE_HOST} -Dsonar.token=$$SONAR_TOKEN -Dsonar.projectKey=my:${_APP_NAME} -Dsonar.sources=. -Dsonar.exclusions=**/configs/**,**/logs/**
     secretEnv:
       - 'SONAR_TOKEN'
 
