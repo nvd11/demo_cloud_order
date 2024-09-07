@@ -1,0 +1,29 @@
+steps:
+
+  - id: trigger sonarqube scanning
+  - name: 'gcr.io/cloud-builders/sonar-scanner:latest'
+    args:
+      - '-Dsonar.host.url=${_SONARQUBE_HOST}'
+      - '-Dsonar.login=$$SONAR_TOKEN'
+      - '-Dsonar.projectKey=my:${_APP_NAME}'
+      - '-Dsonar.sources=.'
+    secretEnv:
+      - 'SONAR_TOKEN'
+
+
+logsBucket: gs://jason-hsbc_cloudbuild/logs/
+options: # https://cloud.google.com/cloud-build/docs/build-config#options
+  logging: GCS_ONLY # or CLOUD_LOGGING_ONLY https://cloud.google.com/cloud-build/docs/build-config#logging
+
+# to define
+availableSecrets:
+  secretManager:
+    - versionName: projects/$PROJECT_ID/secrets/sonarqube-token-gateman/versions/latest
+      env: 'SONAR_TOKEN'
+
+substitutions:
+  _SONARQUBE_HOST: http://tf-vpc0-subnet0-vm0:9000
+  _APP_NAME: cloud-order
+  _PORT: "8082"
+  _APP_ENV: dev
+  _VM_HOST: "tf-vpc0-subnet0-vm0"
