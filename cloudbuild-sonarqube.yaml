@@ -1,7 +1,7 @@
 steps:
 
   - id: trigger sonarqube scanning
-  - name: 'gcr.io/cloud-builders/sonar-scanner:latest'
+    name: 'gcr.io/cloud-builders/sonar-scanner:latest'
     args:
       - '-Dsonar.host.url=${_SONARQUBE_HOST}'
       - '-Dsonar.login=$$SONAR_TOKEN'
