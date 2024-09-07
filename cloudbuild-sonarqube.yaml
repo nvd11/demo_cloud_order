@@ -1,8 +1,11 @@
 steps:
 
   - id: trigger sonarqube scanning
-    name: 'gcr.io/$PROJECT_ID/sonar-scanner:latest'
+    name: 'sonarsource/sonar-scanner-cli'
+    entrypoint: '/bin/sh'
     args:
+      - '-c'
+      - 'sonar-scanner'
       - '-Dsonar.host.url=${_SONARQUBE_HOST}'
       - '-Dsonar.login=$$SONAR_TOKEN'
       - '-Dsonar.projectKey=my:${_APP_NAME}'
