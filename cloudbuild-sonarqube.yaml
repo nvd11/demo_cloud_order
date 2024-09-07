@@ -22,8 +22,5 @@ availableSecrets:
       env: 'SONAR_TOKEN'
 
 substitutions:
-  _SONARQUBE_HOST: http://tf-vpc0-subnet0-vm0:9000
+  _SONARQUBE_HOST: http://www.jp-gcp-vms.cloud:9000
   _APP_NAME: cloud-order
-  _PORT: "8082"
-  _APP_ENV: dev
-  _VM_HOST: "tf-vpc0-subnet0-vm0"
