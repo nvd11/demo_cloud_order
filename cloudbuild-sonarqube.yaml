@@ -7,6 +7,7 @@ steps:
     args:
       - '-c'
       - |
+        set -x
         pwd
         chmod -R 777 .
 
@@ -16,11 +17,11 @@ steps:
     args:
       - '-c'
       - |
-        whoami
         set -x
+        whoami
         pwd
         ls -ld
-        sonar-scanner -Dsonar.projectKey=my:${_APP_NAME}  -Dsonar.host.url=${_SONARQUBE_HOST} -Dsonar.login=$$SONAR_TOKEN -Dsonar.projectKey=my:${_APP_NAME} -Dsonar.sources=.
+        sonar-scanner -Dsonar.projectKey=my:${_APP_NAME}  -Dsonar.host.url=${_SONARQUBE_HOST} -Dsonar.login=$$SONAR_TOKEN -Dsonar.projectKey=my:${_APP_NAME} -Dsonar.java.binaries=target/classes -Dsonar.sources=.
     secretEnv:
       - 'SONAR_TOKEN'
 
