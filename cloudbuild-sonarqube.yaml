@@ -6,6 +6,9 @@ steps:
     args:
       - '-c'
       - |
+        set -x
+        pwd
+        ls -l
         sonar-scanner -Dsonar.projectKey=my:${_APP_NAME}  -Dsonar.host.url=${_SONARQUBE_HOST} -Dsonar.login=$$SONAR_TOKEN -Dsonar.projectKey=my:${_APP_NAME} -Dsonar.sources=.
     secretEnv:
       - 'SONAR_TOKEN'
