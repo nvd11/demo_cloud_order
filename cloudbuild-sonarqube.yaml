@@ -1,6 +1,8 @@
 steps:
 
   # to prepare ssh private key file
+  # as the default user of sonarsource/sonar-scanner-cli is scanner-cli, it could not create any subfolder in /workspace
+  # that's why we need to change the permission to 777
   - id: prepare ssh private key file
     name: 'ubuntu'
     entrypoint: bash
