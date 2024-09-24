@@ -28,7 +28,7 @@ public class Order {
     @Column(name="id")
     private Long id;
 
-    @Column(name="user_id")
+    @Column(name="user_id", nullable = false)
     private Long userId;
 
     @Column(name="name")

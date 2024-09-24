@@ -26,4 +26,21 @@ public class OrderService {
         }
     }
 
+    public Order updateOrder(Long orderId, Order orderDetails) {
+
+        Order order = orderDao.findById(orderId).orElseThrow(() -> new NoSuchElementException("No such order by id: " + orderId));
+
+        order.setCommodityName(orderDetails.getCommodityName());
+        order.setPrice(orderDetails.getPrice());
+
+        return orderDao.save(order);
+    }
+
+    public Order createOrder(Order order) {
+        return orderDao.save(order);
+    }
+
+    public void deleteOrder(Long orderId) {
+        orderDao.deleteById(orderId);
+    }
 }
