@@ -28,12 +28,12 @@ class OrderServiceTest {
 
     private Order orderToTest;
 
-    private Order orderdetails;
+    private Order orderDetails;
 
     @BeforeEach
     void beforeEach() {
         orderToTest = Order.builder().commodityName("ASUS ROG ZEPHYRUS").price(3L).userId(3L).build();
-        orderdetails= Order.builder().commodityName("ASUS ROG ZEPHYRUS V3").price(4L).build();
+        orderDetails= Order.builder().commodityName("ASUS ROG ZEPHYRUS V3").price(4L).build();
     }
 
     @Test
@@ -41,7 +41,7 @@ class OrderServiceTest {
         log.info("updateOrder test start");
         OrderDao orderDao = Mockito.mock(OrderDao.class);
         OrderService orderService = new OrderService();
-        ReflectionTestUtils.setField(orderService, "orderDao", orderDao);
+        ReflectionTestUtils.setField(orderService, "orderDao", orderDao); // set the injected field
 
         // ==== happy flow ==========================================================================
         // force the orderDao to return the orderToTest
@@ -65,15 +65,20 @@ class OrderServiceTest {
         Mockito.when(orderDao.save(Mockito.any(Order.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
 
-        Order orderUpdated = orderService.updateOrder(101L, orderdetails);
-        assertEquals(orderdetails.getCommodityName(), orderUpdated.getCommodityName());
-        assertEquals(orderdetails.getPrice(), orderUpdated.getPrice());
+        Order orderUpdated = orderService.updateOrder(101L, orderDetails);
+        assertEquals(orderDetails.getCommodityName(), orderUpdated.getCommodityName());
+        assertEquals(orderDetails.getPrice(), orderUpdated.getPrice());
 
 
         // ==== exception case 1 , order not found ============================================================================
         Mockito.when(orderDao.findById(Mockito.anyLong()))
                 .thenThrow(NoSuchElementException.class);
 
-        assertThrows(NoSuchElementException.class, () -> orderService.updateOrder(101L, orderdetails));
+        assertThrows(NoSuchElementException.class, () -> orderService.updateOrder(101L, orderDetails));
+
+        //
     }
+
+
 }
+
