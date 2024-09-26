@@ -62,6 +62,6 @@ external-custom-config2-path: /app/config/config2/external-config2.properties
 
 logging:
   level:
-    root: DEBUG
+    root: INFO
   file:
     name: logs/myapp.log
